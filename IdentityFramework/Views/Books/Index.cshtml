@@ -1,0 +1,52 @@
+﻿@using IdentityFramework.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager
+@model IEnumerable<IdentityFramework.Models.Books>
+
+@{
+    ViewData["Title"] = "Books List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Library Book Collection</h2>
+
+    @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.HasClaim(c => c.Type == "Create Role" && c.Value == "Create Role")))
+     {
+        <div class="mb-3 text-end">
+            <a href="@Url.Action("Create", "Books")" class="btn btn-success">Add New Book</a>
+    </div>
+    }
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author.AuthorName</td>
+                    <td>@book.Category.CategoryName</td>
+                    <td>@book.Year</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Books", new { id = book.BookId })" class="btn btn-info btn-sm">View</a>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                        <a href="@Url.Action("Edit", "Books", new { id = book.BookId })" class="btn btn-primary btn-sm">Edit</a>
+
+                            <a href="@Url.Action("Delete", "Books", new { id = book.BookId })" class="btn btn-danger btn-sm">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

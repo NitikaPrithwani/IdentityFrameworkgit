@@ -1,0 +1,38 @@
+﻿@model IEnumerable<IdentityFramework.Models.Books>
+
+@{
+    ViewData["Title"] = "Available Books";
+}
+
+<h2 class="mb-4">Available Books</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Published Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author.AuthorName</td>
+                    <td>@book.Category.CategoryName</td>
+                    <td>@book.Year</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning mt-3" role="alert">
+        <strong>No books available!</strong> All books are currently borrowed.
+    </div>
+}

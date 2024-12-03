@@ -1,0 +1,72 @@
+﻿@model AuthorViewModel
+@using IdentityFramework.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Add Author";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <h1>Add Author</h1>
+
+    @using (Html.BeginForm("AddAuthors", "Books", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label for="AuthorName">Author Name</label>
+            @Html.TextBoxFor(model => model.NewAuthor.AuthorName, new { @class = "form-control", id = "AuthorName" })
+            @Html.ValidationMessageFor(model => model.NewAuthor.AuthorName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="Biography">Biography</label>
+            @Html.TextAreaFor(model => model.NewAuthor.Biography, new { @class = "form-control", id = "Biography" })
+            @Html.ValidationMessageFor(model => model.NewAuthor.Biography, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="DateOfBirth">Date of Birth</label>
+            @Html.TextBoxFor(model => model.NewAuthor.DateOfBirth, new { @class = "form-control", type = "datetime-local", id = "DateOfBirth" })
+            @Html.ValidationMessageFor(model => model.NewAuthor.DateOfBirth, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary m-1">Save Author</button>
+    }
+}
+
+<h3 class="text-primary">Existing Authors</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.AuthorsList.First().AuthorName)</th>
+            <th>@Html.DisplayNameFor(model => model.AuthorsList.First().Biography)</th>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AuthorsList)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.AuthorName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Biography)</td>
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="DeleteAuthor" asp-route-id="@item.AuthorId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

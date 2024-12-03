@@ -1,0 +1,30 @@
+﻿@model IEnumerable<BorrowingRecords>
+
+<h2>Your Borrowing History</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.Book.Title</td>
+                    <td>@record.IssueDate.ToShortDateString()</td>
+                    <td>@(record.ReturnDate.HasValue ? record.ReturnDate.Value.ToShortDateString() : "Not Returned Yet")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You have no borrowing history.</p>
+}

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<IdentityFramework.Models.BorrowingRecords>
+
+<h2>Books Currently Borrowed</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Book Title</th>
+                <th>Borrow Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.User.UserName</td>
+                    <td>@record.Book.Title</td>
+                    <td>@record.IssueDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No books are currently borrowed.</p>
+}

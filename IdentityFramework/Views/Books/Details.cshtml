@@ -1,0 +1,29 @@
+﻿@model IdentityFramework.Models.Books
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Book Details</h2>
+
+    <div class="mb-3">
+        <label class="form-label">Book Title</label>
+        <p>@Model.Title</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Author</label>
+        <p>@Model.Author</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <p>@Model.Category</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Year Published</label>
+        <p>@Model.Year</p>
+    </div>
+    <div class="text-center">
+        <a href="@Url.Action("Index", "Books")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

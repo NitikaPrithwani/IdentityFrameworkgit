@@ -1,0 +1,48 @@
+﻿@using IdentityFramework.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<ApplicationUser> RoleManager
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "All Users";
+}
+
+<h1>All Users</h1>
+
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" style="width:auto" id="register" asp-area="Identity" asp-page="/Account/Register">Add New User</a>
+
+    foreach (var user in Model)
+    {
+        var roles = await UserManager.GetRolesAsync(user); 
+        var roleName = roles.FirstOrDefault();
+        var role = await RoleManager.FindByNameAsync(roleName);
+        var roleId = role?.Id;
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                User Id : @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@user.UserName</h5>
+            </div>
+            <div class="card-footer">
+                 <a href="@Url.Action("EditUsersInRole", "Administration", new { roleId = roleId })" class="btn btn-primary btn-sm">Edit</a>
+                
+                <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No Users Added Yet
+        </div>
+    </div>
+}

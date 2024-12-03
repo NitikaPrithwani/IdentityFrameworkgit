@@ -1,0 +1,42 @@
+﻿@model IEnumerable<IdentityFramework.Models.BorrowingRecords>
+
+@{
+    ViewData["Title"] = "Borrowed Books";
+}
+
+<h2 class="mb-4">Borrowed Books</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>User</th>
+                <th>Book Title</th>
+                <th>Issue Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.User?.UserName</td>
+                    <td>@record.Book?.Title</td>
+                    <td>@record.IssueDate.ToShortDateString()</td>
+                    <td>
+                        <a href="@Url.Action("Return", "ReturnBook", new { id = record.RecordId })" class="btn btn-success btn-sm">
+                            Return Book
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info mt-3">
+        <strong>No borrowed books!</strong> All books have been returned.
+    </div>
+}

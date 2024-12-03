@@ -1,0 +1,21 @@
+﻿@model IdentityFramework.Models.Books
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="alert alert-warning">
+    <strong>Warning!</strong> Are you sure you want to delete the book titled <strong>@Model.Title</strong> by <strong>@Model.Author</strong>?
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="BookId" />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="@Url.Action("Index", "Books")" class="btn btn-secondary">No, Cancel</a>
+    </div>
+</form>
